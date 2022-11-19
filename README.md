@@ -7,7 +7,7 @@
 - Ajax实现：axios
 - 数据mock：json-server
 
-## 安装与运行
+## 安装运行
 ```bash
  git clone 仓库地址
  cd 仓库名
