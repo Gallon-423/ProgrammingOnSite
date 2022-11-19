@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { postInput } from "@/../api"
+import DigitsToCNVue from "@/components/DigitsToCN.vue";
 import { ref } from "vue";
 const output = ref<string>() 
 const input = ref<string>()
@@ -10,7 +11,9 @@ postInput(input.value).then((result) => {
 
 <template>
   <div class="f-col">
-    <div class="frame" style="width: 80vw;height:20vh"></div>
+    <div class="frame" style="width: 80vw;height:20vh">
+      <DigitsToCNVue></DigitsToCNVue>
+    </div>
     <div class="frame" style="width: 20vw;height:60vh;align-self: center;"></div>
   </div>
 </template>

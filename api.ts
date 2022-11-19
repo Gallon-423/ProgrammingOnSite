@@ -12,8 +12,12 @@ export interface ResponseData {
 let service: AxiosInstance | any;
 
 service = axios.create({
-  baseURL: "/api",
+  baseURL: "http://192.168.6.67:3777",
   timeout: 50000,
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
+},
 });
 
 // respone 拦截器 axios 的一些配置
@@ -31,7 +35,14 @@ service.interceptors.response.use(
           type: "info",
         });
       }
-    } else {
+    }
+    else if (res.status === 500) {
+      ElMessage({
+        message: "请检查你的输入是否合法！!",
+        type: "info",
+      });
+    }
+    else {
       ElMessage({
         message: "网络错误!",
         type: "error",
@@ -47,7 +58,7 @@ service.interceptors.response.use(
 export async function postInput(input: string |any) {
     const form = new FormData()
     form.append('input', input)
-    const data = await service.post(`/api/transform`, form)
+    const data = await service.post(`/api/conv`, form)
     return data
 }
 
