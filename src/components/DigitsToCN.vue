@@ -1,53 +1,64 @@
 <template>
-    <div>
-        <el-row>
-            <el-form ref="digitsFormRef" :model="record" status-icon :rules="rules" label-width="120px" inline
-                class="digitsForm">
-                <el-form-item label="请输入:" prop="digits" size="large">
-                    <el-input v-model="record.input" />
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" size="large" @click="submitForm(formRef)">提交</el-button>
-                </el-form-item>
-            </el-form>
-        </el-row>
-        <el-row>
-            <el-input v-model="record.output" :rows="2" type="textarea" placeholder="答案会在这里显示..."   resize="none" readonly />
-        </el-row>
+  <div style="display: flex;flex-direction: column;align-items: center;width:100%;">
+    <div style="display: flex;flex-direction: column;align-items: center;">
+        <div style="display: flex;">
+    <el-row style="width:100%;">
+
+      <el-form ref="digitsFormRef" status-icon inline>
+        <div style="display: flex;">
+        <el-form-item  label="请输入:" prop="input" size="large" style="width: 50vw;">
+          <el-input v-model="input" clearable />
+        </el-form-item>
+        
+          <el-button type="primary" size="large" @click="submitForm()"
+            >提交</el-button
+          >
+    
+        </div>
+       
+      </el-form>
+
+    </el-row>
+    
+  </div>
+  <el-row>
+    转换结果：{{ output }}
+  </el-row>
     </div>
+
+  </div>  
+  
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import type { FormInstance } from 'element-plus'
-import {intoStorage, type BaseRecord } from '../../api'
-import {postInput } from '../../api'
-const formRef = ref<FormInstance>()
-const record=reactive<BaseRecord>({input:"",output:""})
+import { reactive, ref } from "vue";
+import { ElMessage, type FormInstance, type FormRules } from "element-plus";
+import { intoStorage, type BaseRecord } from "../../api";
+import { postInput } from "../../api";
+import { useHistory } from "@/stores/counter";
+const input = ref("");
+const output = ref("");
+const historyStore = useHistory();
 
-const submitForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return
-    formEl.validate((valid) => {
-        if (valid) {
-            postInput(record.input).then(res=>record.output=res)
-            intoStorage(record)
-        } else {
-            //   todo 
-            return false
-        }
-    })
-}
-
-// const daxie = "壹贰叁肆伍陆柒捌玖拾佰仟万亿元零整正"
-// const daxie_u = "\u58f9\u8d30\u53c1\u8086\u4f0d\u9646\u67d2\u634c\u7396\u62fe\u4f70\u4edf\u4e07\u4ebf\u5143\u96f6\u6574\u6b63"
-
-const rules = reactive({
-    digits: [ { type: 'string',message:"", pattern: "/^(+?[1-9][0-9]*)|([\u58f9\u8d30\u53c1\u8086\u4f0d\u9646\u67d2\u634c\u7396\u62fe\u4f70\u4edf\u4e07\u4ebf\u5143\u96f6\u6574\u6b63]{0,})$/"}]
-    // digits: [ { type: 'string', required: true, pattern: "/^+?[1-9][0-9]*$/"}]
+const submitForm = async () => {
+  if (input.value.length === 0) {
+    ElMessage({
+      message: "转换对象不能为空",
+      type: "info",
+    });
+  } else {
+      postInput(input.value).then((res) => {
+          output.value = res;
+          intoStorage(input.value, output.value);
+          historyStore.insertHistory(input.value, output.value);
 })
-
+}
+};
 </script>
 
 <style scoped>
-
+*{
+    display: flex;
+    
+}
 </style>

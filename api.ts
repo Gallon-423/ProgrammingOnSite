@@ -12,12 +12,11 @@ export interface ResponseData {
 let service: AxiosInstance | any;
 
 service = axios.create({
-  baseURL: "http://192.168.6.67:3777",
+  baseURL: "http://1.13.169.95:3777",
   timeout: 50000,
   headers: {
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-},
+    "Content-Type": "application/json",
+  },
 });
 
 // respone 拦截器 axios 的一些配置
@@ -29,20 +28,19 @@ service.interceptors.response.use(
       const data: ResponseData = res.data;
       if (data.code === 1) {
         return data.data;
-      } else {
+      }
+      if (data.code === 0) {
         ElMessage({
-          message: "请检查你的输入是否合法！",
+          message: "请检查你的输入是否合法！!",
           type: "info",
         });
       }
-    }
-    else if (res.status === 500) {
+    } else if (res.status === 500) {
       ElMessage({
         message: "请检查你的输入是否合法！!",
         type: "info",
       });
-    }
-    else {
+    } else {
       ElMessage({
         message: "网络错误!",
         type: "error",
@@ -55,33 +53,24 @@ service.interceptors.response.use(
 
 // 获取输入数据
 
-export async function postInput(input: string |any) {
-    const form = new FormData()
-    form.append('input', input)
-    const data = await service.post(`/api/conv`, form)
-    return data
+export async function postInput(input: string | any) {
+  const form = new FormData();
+  form.append("input", input);
+  const res = await service.post(`/api/conv`, form);
+  return res;
 }
 
-export type BaseRecord={
-  input:string
-  output:string
+export type BaseRecord = {
+  input: string;
+  output: string;
+};
+
+export function intoStorage(input: string, output: string) {
+  localStorage.setItem(input, output);
 }
 
-export function intoStorage(record: BaseRecord) {
-  const oldItemsJson = localStorage.getItem('records')
-  if (oldItemsJson) {
-    const oldItems = JSON.parse(oldItemsJson)
-    if ((oldItems as BaseRecord[]).length > 5) {
-      oldItems!.pop()
-      (oldItems as BaseRecord[]).push(record)
-    }
-    localStorage.removeItem('records')
-    localStorage.setItem('records',JSON.stringify(oldItems))
-  }
-}
-
-export function readStorage():BaseRecord[] {
-  const recordsJson = localStorage.getItem('records')
-  const records = recordsJson ? JSON.parse(recordsJson) : null
-  return records
+export function readStorage(): BaseRecord[] {
+  const recordsJson = localStorage.getItem("records");
+  const records = recordsJson ? JSON.parse(recordsJson) : null;
+  return records;
 }

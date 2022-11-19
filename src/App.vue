@@ -5,5 +5,7 @@ import { RouterLink, RouterView } from 'vue-router'
   <RouterView />
 </template>
 <style scoped>
-
+RouterView{
+  width: 100vw;overflow-x: hidden;
+}
 </style>
