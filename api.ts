@@ -12,8 +12,12 @@ export interface ResponseData {
 let service: AxiosInstance | any;
 
 service = axios.create({
-  baseURL: "/api",
+  baseURL: "http://192.168.6.67:3777/api/conv",
   timeout: 50000,
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
+},
 });
 
 // respone 拦截器 axios 的一些配置
@@ -45,10 +49,14 @@ service.interceptors.response.use(
 // 获取输入数据
 
 export async function postInput(input: string |any) {
-    const form = new FormData()
-    form.append('input', input)
-    const data = await service.post(`/api/transform`, form)
-    return data
+    // const form = new FormData()
+    // form.append('input', input)
+    const res = await service.post(`/api/transform`, JSON.stringify(
+      {
+        input:input
+      }
+    ))
+    return res
 }
 
 export type BaseRecord={
