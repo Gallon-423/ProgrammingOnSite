@@ -1,4 +1,3 @@
-import { record } from './api';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import axios from "axios";
 import { ElMessage } from "element-plus";
@@ -52,25 +51,25 @@ export async function postInput(input: string |any) {
     return data
 }
 
-export type Record={
+export type BaseRecord={
   input:string
   output:string
 }
 
-export function intoStorage(record: Record) {
+export function intoStorage(record: BaseRecord) {
   const oldItemsJson = localStorage.getItem('records')
   if (oldItemsJson) {
     const oldItems = JSON.parse(oldItemsJson)
-    if ((oldItems as record[]).length > 5) {
-      (oldItems as record[]).pop()
-      (oldItems as record[]).push(record)
+    if ((oldItems as BaseRecord[]).length > 5) {
+      oldItems!.pop()
+      (oldItems as BaseRecord[]).push(record)
     }
     localStorage.removeItem('records')
     localStorage.setItem('records',JSON.stringify(oldItems))
   }
 }
 
-export function readStorage():Record[] {
+export function readStorage():BaseRecord[] {
   const recordsJson = localStorage.getItem('records')
   const records = recordsJson ? JSON.parse(recordsJson) : null
   return records
