@@ -5,6 +5,7 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <RouterView />
+  <RouterLink to="/history">history</RouterLink>
 </template>
 
 <style scoped>
