@@ -12,7 +12,7 @@ export interface ResponseData {
 let service: AxiosInstance | any;
 
 service = axios.create({
-  baseURL: "http://1.13.169.95:3777",
+  baseURL: "",
   timeout: 50000,
   headers: {
     "Content-Type": "application/json",
