@@ -14,7 +14,7 @@ console.log(historyStore.history);
 </script>
 
 <template>
-  <div class="f-col" style="margin-top:10%;width: 100%;overflow-x: hidden;border: blue solid 2px;">
+  <div class="f-col" style="margin-top:10%;width: 100%;">
     <p style="
     
     font-size: 2.4em;
@@ -22,7 +22,7 @@ console.log(historyStore.history);
     margin-bottom: 5%;
     display: flex;
   ">数字转换器</p>
-    <div class="frame" style="width: 80vw; height: 20vh;border: pink solid 2px;">
+    <div class="frame" style="width: 80vw; height: 20vh;">
       <DigitsToCNVue></DigitsToCNVue>
     </div>
     <div
@@ -31,7 +31,7 @@ console.log(historyStore.history);
         font-weight: bolder;
         margin-bottom: 2%;
         display: flex;
-        border: red solid 2px;
+        
       "
     >
       <p style="font-weight: bolder">历史记录</p>
